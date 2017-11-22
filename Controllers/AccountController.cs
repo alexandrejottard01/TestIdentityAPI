@@ -12,9 +12,12 @@ namespace TestIdentityAPI.Controllers
     public class AccountController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
-        public AccountController(UserManager<ApplicationUser> userManager)
+        private RoleManager<IdentityRole> _roleManager;
+
+        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this._userManager=userManager;
+            this._roleManager=roleManager;
         }
 
         [HttpPost]
@@ -27,6 +30,13 @@ namespace TestIdentityAPI.Controllers
                         
                 };
                 IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
+                bool adminExist = await _roleManager.RoleExistsAsync("admin");
+                if(!adminExist){
+                    await _roleManager.CreateAsync(new IdentityRole("admin"));
+                }
+
+                await _userManager.AddToRoleAsync(newUser,"admin");
+
                 // TODO: retourner un Created à la place du Ok;
                 return (result.Succeeded)?Ok():(IActionResult)BadRequest();
         }
