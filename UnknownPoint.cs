@@ -11,6 +11,6 @@ namespace TestIdentityAPI
         public decimal Longitude { get; set; }
         public DateTime DateCreation { get; set; }
 
-        public AspNetUsers IdUserNavigation { get; set; }
+        public ApplicationUser IdUserNavigation { get; set; }
     }
 }

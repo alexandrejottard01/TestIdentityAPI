@@ -16,7 +16,7 @@ namespace TestIdentityAPI
         public long IdInterestPoint { get; set; }
 
         public InterestPoint IdInterestPointNavigation { get; set; }
-        public AspNetUsers IdUserNavigation { get; set; }
+        public ApplicationUser IdUserNavigation { get; set; }
         public ICollection<VoteDescription> VoteDescription { get; set; }
     }
 }

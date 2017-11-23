@@ -12,15 +12,15 @@ namespace TestIdentityAPI.Controllers
     public class AccountController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
+        //private RoleManager<IdentityRole> _roleManager;
 
-        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager/*, RoleManager<IdentityRole> roleManager*/)
         {
             this._userManager=userManager;
-            this._roleManager=roleManager;
+            //this._roleManager=roleManager;
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
         {
             
@@ -39,21 +39,23 @@ namespace TestIdentityAPI.Controllers
 
                 // TODO: retourner un Created à la place du Ok;
                 return (result.Succeeded)?Ok():(IActionResult)BadRequest();
-        }
+        }*/
 
-        /*[HttpPost]
+        [HttpPost]
         public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
         {
             
                 var newUser=new ApplicationUser{
                         UserName=dto.UserName,
-                        Email = dto.Email
+                        Email = dto.Email,
+                        IsCertified = dto.IsCertified,
+                        Language = dto.Language
                         
                 };
                 IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
                 // TODO: retourner un Created à la place du Ok;
                 return (result.Succeeded)?Ok():(IActionResult)BadRequest();
-        }*/
+        }
 
         
     }

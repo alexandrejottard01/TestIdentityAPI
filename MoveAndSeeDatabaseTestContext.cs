@@ -10,13 +10,13 @@ namespace TestIdentityAPI
         {
 
         }
-        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        /*public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
-        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
-        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }*/
+        public virtual DbSet<ApplicationUser> AspNetUsers { get; set; }
+        //public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<Description> Description { get; set; }
         public virtual DbSet<InterestPoint> InterestPoint { get; set; }
         public virtual DbSet<UnknownPoint> UnknownPoint { get; set; }
@@ -34,7 +34,7 @@ namespace TestIdentityAPI
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AspNetRoleClaims>(entity =>
+            /*modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {
                 entity.HasIndex(e => e.RoleId);
 
@@ -96,9 +96,9 @@ namespace TestIdentityAPI
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.AspNetUserRoles)
                     .HasForeignKey(d => d.UserId);
-            });
+            });*/
 
-            modelBuilder.Entity<AspNetUsers>(entity =>
+            modelBuilder.Entity<ApplicationUser>(entity =>
             {
                 entity.HasIndex(e => e.NormalizedEmail)
                     .HasName("EmailIndex");
@@ -143,14 +143,14 @@ namespace TestIdentityAPI
                 entity.Property(e => e.UserName).HasMaxLength(256);
             });
 
-            modelBuilder.Entity<AspNetUserTokens>(entity =>
+            /*modelBuilder.Entity<AspNetUserTokens>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.AspNetUserTokens)
                     .HasForeignKey(d => d.UserId);
-            });
+            });*/
 
             modelBuilder.Entity<Description>(entity =>
             {

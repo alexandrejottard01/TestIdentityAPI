@@ -18,7 +18,7 @@ namespace TestIdentityAPI
         public string Name { get; set; }
         public DateTime DateCreation { get; set; }
 
-        public AspNetUsers IdUserNavigation { get; set; }
+        public ApplicationUser IdUserNavigation { get; set; }
         public ICollection<Description> Description { get; set; }
         public ICollection<VoteInterestPoint> VoteInterestPoint { get; set; }
     }

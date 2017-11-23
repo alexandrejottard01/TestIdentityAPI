@@ -10,6 +10,6 @@ namespace TestIdentityAPI
         public long IdDescription { get; set; }
 
         public Description IdDescriptionNavigation { get; set; }
-        public AspNetUsers IdUserNavigation { get; set; }
+        public ApplicationUser IdUserNavigation { get; set; }
     }
 }
