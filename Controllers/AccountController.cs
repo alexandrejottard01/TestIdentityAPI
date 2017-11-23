@@ -41,6 +41,20 @@ namespace TestIdentityAPI.Controllers
                 return (result.Succeeded)?Ok():(IActionResult)BadRequest();
         }
 
+        /*[HttpPost]
+        public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
+        {
+            
+                var newUser=new ApplicationUser{
+                        UserName=dto.UserName,
+                        Email = dto.Email
+                        
+                };
+                IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
+                // TODO: retourner un Created à la place du Ok;
+                return (result.Succeeded)?Ok():(IActionResult)BadRequest();
+        }*/
+
         
     }
 }
