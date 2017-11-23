@@ -8,7 +8,7 @@ namespace TestIdentityAPI
     {
         public MoveAndSeeDatabaseTestContext(DbContextOptions<MoveAndSeeDatabaseTestContext> options) : base(options)
         {
-            
+
         }
         public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
         public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
