@@ -16,9 +16,17 @@ namespace TestIdentityAPI.Controllers
     public abstract class BaseController : Controller
     {
         private UserManager<ApplicationUser> _uMgr;
-        public BaseController(UserManager<ApplicationUser> uMgr)
+        private MoveAndSeeDatabaseTestContext _context;
+
+        public MoveAndSeeDatabaseTestContext Context{
+            get{return _context;}
+            set{_context = value;}
+        }
+
+        public BaseController(UserManager<ApplicationUser> uMgr, MoveAndSeeDatabaseTestContext context)
         {
             _uMgr=uMgr;
+            _context = context;
         }
        protected async Task<ApplicationUser> GetCurrentUserAsync()
        {

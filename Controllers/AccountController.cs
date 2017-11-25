@@ -26,7 +26,12 @@ namespace TestIdentityAPI.Controllers
             
                 var newUser=new ApplicationUser{
                         UserName=dto.UserName,
-                        Email = dto.Email
+                        Email = dto.Email,
+                        IsCertified = dto.IsCertified,
+                        Language = dto.Language,
+                        NameCertified = dto.NameCertified,
+                        IsMale = dto.IsMale
+
                         
                 };
                 IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
@@ -49,7 +54,10 @@ namespace TestIdentityAPI.Controllers
                         UserName=dto.UserName,
                         Email = dto.Email,
                         IsCertified = dto.IsCertified,
-                        Language = dto.Language
+                        Language = dto.Language,
+                        NameCertified = dto.NameCertified,
+                        IsMale = dto.IsMale,
+                        BirthDate = dto.BirthDate
                         
                 };
                 IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);

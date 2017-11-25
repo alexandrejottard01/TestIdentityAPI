@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace TestIdentityAPI
 {
@@ -40,14 +42,32 @@ namespace TestIdentityAPI
         public DateTime? BirthDate { get; set; }
         public byte[] RowVersion { get; set; }
 
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<AspNetUserClaims> AspNetUserClaims { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<AspNetUserLogins> AspNetUserLogins { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<AspNetUserRoles> AspNetUserRoles { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<AspNetUserTokens> AspNetUserTokens { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<Description> Description { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<InterestPoint> InterestPoint { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<UnknownPoint> UnknownPoint { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<VoteDescription> VoteDescription { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<VoteInterestPoint> VoteInterestPoint { get; set; }
     }
 }

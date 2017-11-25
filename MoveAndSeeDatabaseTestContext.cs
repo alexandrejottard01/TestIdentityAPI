@@ -15,7 +15,7 @@ namespace TestIdentityAPI
         public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }*/
-        public virtual DbSet<ApplicationUser> AspNetUsers { get; set; }
+        public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
         //public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
         public virtual DbSet<Description> Description { get; set; }
         public virtual DbSet<InterestPoint> InterestPoint { get; set; }

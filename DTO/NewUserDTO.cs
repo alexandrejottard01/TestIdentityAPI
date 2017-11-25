@@ -1,3 +1,5 @@
+using System;
+
 namespace TestIdentityAPI.DTO
 {
     public class NewUserDTO
@@ -9,6 +11,9 @@ namespace TestIdentityAPI.DTO
 
         public bool IsCertified { get; set; }
         public string Language { get; set; }    
+        public string NameCertified { get; set; }
+        public bool? IsMale { get; set; }
+        public DateTime? BirthDate { get; set; }
 
     }
 }

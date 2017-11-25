@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace TestIdentityAPI
 {
@@ -19,7 +21,11 @@ namespace TestIdentityAPI
         public DateTime DateCreation { get; set; }
 
         public ApplicationUser IdUserNavigation { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public ICollection<Description> Description { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]        
         public ICollection<VoteInterestPoint> VoteInterestPoint { get; set; }
     }
 }
