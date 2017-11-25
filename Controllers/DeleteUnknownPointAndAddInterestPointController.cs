@@ -2,9 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 using Microsoft.AspNetCore.Server.Kestrel.Internal.System.Collections.Sequences;
 using Microsoft.EntityFrameworkCore;
 using TestIdentityAPI;
@@ -12,6 +16,7 @@ using TestIdentityAPI.Controllers;
 
 namespace MoveAndSeeAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/DeleteUnknownPointAndInterestPoint")]
     public class DeleteUnknownPointAndInterestPointController : BaseController
     {

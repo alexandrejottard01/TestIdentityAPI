@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Server.Kestrel.Internal.System.Collections.Sequences;
@@ -12,12 +14,9 @@ using TestIdentityAPI.Controllers;
 
 namespace MoveAndSeeAPI.Controllers
 {
-    //A FAIRE (API)
 
-    //Securité
-    //Identification API
-    //Accès concurrentiel
 
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/Description")]
     public class DescriptionController : BaseController
     {
