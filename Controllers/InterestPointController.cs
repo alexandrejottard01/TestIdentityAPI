@@ -34,8 +34,6 @@ namespace MoveAndSeeAPI.Controllers
         [HttpPost("AddInterestPoint")]
         public IActionResult AddInterestPoint([FromBody]InterestPoint interestPoint)
         {
-            
-
                 if(ModelState.IsValid){
                     Context.InterestPoint.Add(interestPoint);
                     Context.SaveChanges();
@@ -45,8 +43,6 @@ namespace MoveAndSeeAPI.Controllers
                 else{
                     return BadRequest();
                 }
-                
-            
         }
  
         // GET api/InterestPoint/GetInterestPointById/1 OK
@@ -169,7 +165,6 @@ namespace MoveAndSeeAPI.Controllers
                         .Include(a=>a.IdUserNavigation)
                         .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
                         .OrderBy(ip => ip.Average)
-                        .ThenBy(ip => ip.InterestPoint.DateCreation)
                         .ToList();
 
                 return Ok(listInterestPointWithVote);

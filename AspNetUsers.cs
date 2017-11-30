@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
 
@@ -34,8 +35,17 @@ namespace TestIdentityAPI
         public bool PhoneNumberConfirmed { get; set; }
         public string SecurityStamp { get; set; }
         public bool TwoFactorEnabled { get; set; }
+
+        [Required]
+        [MinLength(3)]
+        [MaxLength(12)]
         public string UserName { get; set; }
+
+        [Required]
         public bool IsCertified { get; set; }
+
+        [MinLength(3)]
+        [MaxLength(30)]
         public string NameCertified { get; set; }
         public string Language { get; set; }
         public bool? IsMale { get; set; }

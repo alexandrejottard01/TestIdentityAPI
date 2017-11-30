@@ -23,12 +23,11 @@ namespace MoveAndSeeAPI.Controllers
         public DeleteUnknownPointAndInterestPointController(UserManager<ApplicationUser> uMgr, MoveAndSeeDatabaseTestContext context) : base(uMgr, context)
         {
         }
+
         //POST api/DeleteUnknownPointAndInterestPoint/DeleteUnknownPointAndInterestPoint
         [HttpPost("DeleteUnknownPointAndInterestPoint/{idUnknownPoint}")]
         public IActionResult DeleteUnknownPointAndInterestPoint([FromBody]Description description, long idUnknownPoint)
         {
-            
-
                 UnknownPoint unknownPointDelete = Context.UnknownPoint
                                 .SingleOrDefault(a => a.IdUnknownPoint == idUnknownPoint);
 
@@ -48,7 +47,6 @@ namespace MoveAndSeeAPI.Controllers
                         return BadRequest();
                     }
                 }
-            
         }
     }
 }
