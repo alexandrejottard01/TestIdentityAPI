@@ -93,11 +93,11 @@ namespace MoveAndSeeAPI.Controllers
                         .Select(desc => new DescriptionWithVote(){
                             Description = desc,
                             Average = (desc.VoteDescription.Count() >0 ? (int) (((double)desc.VoteDescription.Count(vdesc=>vdesc.IsPositiveAssessment)/desc.VoteDescription.Count())*100) : -1)})
+                        .ToList()
+                        .OrderBy(ip => ip.Average)
                         .ToList();
 
-                        List<DescriptionWithVote> SortedListDescriptionWithVote = listDescriptionWithVote.OrderBy(ip => ip.Average).ToList();
-
-                    return Ok(SortedListDescriptionWithVote); 
+                    return Ok(listDescriptionWithVote); 
                 }      
             
         }

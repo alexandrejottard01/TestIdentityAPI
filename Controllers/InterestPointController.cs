@@ -140,11 +140,14 @@ namespace MoveAndSeeAPI.Controllers
                             .ThenInclude(a => a.VoteDescription)
                         .Include(a => a.VoteInterestPoint)
                         .Include(a=>a.IdUserNavigation)
-                        .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
+                        .Select(ip => new InterestPointWithVote(){ 
+                            InterestPoint = ip, 
+                            Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
+                        .ToList()
+                        .OrderBy(ip => ip.Average)
                         .ToList();
-
-                List<InterestPointWithVote> SortedListInterestPointWithVote = listInterestPointWithVote.OrderBy(ip => ip.Average).ToList();
-                return Ok(SortedListInterestPointWithVote);
+                        
+                return Ok(listInterestPointWithVote);
             
         }
 
