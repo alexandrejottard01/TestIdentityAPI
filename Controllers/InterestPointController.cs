@@ -130,29 +130,6 @@ namespace MoveAndSeeAPI.Controllers
             
         }
 
-        // GET api/InterestPoint/GetAllInterestPointsSortedByDateCreation OK
-        [HttpGet("GetAllInterestPointsSortedByDateCreation")]
-        public IActionResult GetAllInterestPointsSortedByDateCreation()
-        {
-
-                List<InterestPointWithVote> listInterestPointWithVote = Context.InterestPoint
-                        .Include(a => a.Description)
-                            .ThenInclude(a => a.VoteDescription)
-                        .Include(a => a.VoteInterestPoint)
-                        .Include(a=>a.IdUserNavigation)
-                        .OrderBy(a => a.DateCreation)
-                        .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
-                        .ToList();
-
-               /* List<InterestPoint> listInterestPoint = context.InterestPoint
-                        .OrderBy(a => a.DateCreation)
-                        .ToList();
-                return Ok(listInterestPoint);*/
-
-                return Ok(listInterestPointWithVote);
-            
-        }
-
         // GET api/InterestPoint/GetAllInterestPointSortedByVoteInterestPoint OK
         [HttpGet("GetAllInterestPointSortedByVoteInterestPoint")] 
         public IActionResult GetAllInterestPointByVoteInterest()
@@ -164,10 +141,10 @@ namespace MoveAndSeeAPI.Controllers
                         .Include(a => a.VoteInterestPoint)
                         .Include(a=>a.IdUserNavigation)
                         .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
-                        .OrderBy(ip => ip.Average)
                         .ToList();
 
-                return Ok(listInterestPointWithVote);
+                List<InterestPointWithVote> SortedListInterestPointWithVote = listInterestPointWithVote.OrderBy(ip => ip.Average).ToList();
+                return Ok(SortedListInterestPointWithVote);
             
         }
 
