@@ -94,7 +94,7 @@ namespace MoveAndSeeAPI.Controllers
                             Description = desc,
                             Average = (desc.VoteDescription.Count() >0 ? (int) (((double)desc.VoteDescription.Count(vdesc=>vdesc.IsPositiveAssessment)/desc.VoteDescription.Count())*100) : -1)})
                         .ToList()
-                        .OrderBy(ip => ip.Average)
+                        .OrderByDescending(ip => ip.Average)
                         .ToList();
 
                     return Ok(listDescriptionWithVote); 
