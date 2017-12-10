@@ -12,6 +12,42 @@ namespace TestIdentityAPI.Controllers
     public class AccountController : Controller
     {
         private UserManager<ApplicationUser> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
+
+        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            this._userManager=userManager;
+            this._roleManager=roleManager;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
+        {
+            var newUser=new ApplicationUser{
+                UserName=dto.UserName,
+                        Email = dto.Email,
+                        IsCertified = dto.IsCertified,
+                        Language = dto.Language,
+                        NameCertified = dto.NameCertified,
+                        IsMale = dto.IsMale,
+                        BirthDate = dto.BirthDate
+                };
+                IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
+                bool userExist = await _roleManager.RoleExistsAsync("user");
+                if(!userExist){
+                    await _roleManager.CreateAsync(new IdentityRole("user"));
+                }
+
+                await _userManager.AddToRoleAsync(newUser,"user");
+
+                // TODO: retourner un Created à la place du Ok;
+                return (result.Succeeded)?Ok():(IActionResult)BadRequest();
+        }
+    }
+    //Créer un user sans rôle
+    /*public class AccountController : Controller
+    {
+        private UserManager<ApplicationUser> _userManager;
 
         public AccountController(UserManager<ApplicationUser> userManager)
         {
@@ -35,7 +71,7 @@ namespace TestIdentityAPI.Controllers
                 // TODO: retourner un Created à la place du Ok;
                 return (result.Succeeded)?Ok():(IActionResult)BadRequest();
         }
-    }
+    }*/
 
     //Créer un Administrateur
     /* 
