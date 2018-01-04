@@ -16,21 +16,11 @@ namespace MoveAndSeeAPI.Controllers
     [Route("api/InterestPoint")]
     public class InterestPointController : BaseController
     {
-
         public InterestPointController(UserManager<ApplicationUser> uMgr, MoveAndSeeDatabaseTestContext context) : base(uMgr, context)
         {
         }
-        //AddInterestPoint OK
-        //GetInterestPointById OK
-        //GetAllInterestPoints OK
-        //GetAllInterestPointsByUser OK
-        //GetAllInterestPointsSortedByDateCreation OK
-        //GetAllInterestPointsSortedByVoteInterestPoint OK
-        //DeleteInterestPointById OK
 
-        
-
-        //POST api/InterestPoint/AddInterestPoint OK
+        //POST api/InterestPoint/AddInterestPoint
         [HttpPost("AddInterestPoint")]
         public IActionResult AddInterestPoint([FromBody]InterestPoint interestPoint)
         {
@@ -40,12 +30,11 @@ namespace MoveAndSeeAPI.Controllers
 
                     return Ok();
                 }
-                else{
-                    return BadRequest();
-                }
+
+                return BadRequest();
         }
  
-        // GET api/InterestPoint/GetInterestPointById/1 OK
+        // GET api/InterestPoint/GetInterestPointById/1
         [HttpGet("GetInterestPointById/{idInterestPoint}")]
         public IActionResult GetInterestPointById(int idInterestPoint)
         {
@@ -57,84 +46,57 @@ namespace MoveAndSeeAPI.Controllers
                         .Where(a => a.IdInterestPoint == idInterestPoint)
                         .Select(ip => new InterestPointWithVote(){
                             InterestPoint = ip,
-                            Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double)ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
+                            Average = calculateAverage(ip)})
                         .SingleOrDefault();
 
                 if(interestPointWithVote == null){
                     return NotFound();
                 }
-                else{
-                    return Ok(interestPointWithVote);
-                }
-            
+
+                return Ok(interestPointWithVote);
         }
 
-        // GET api/InterestPoint/GetAllInterestPoints OK test
+        // GET api/InterestPoint/GetAllInterestPoints
         [HttpGet("GetAllInterestPoints")]
         public IActionResult GetAllInterestPoints()
         {
-
                 List<InterestPointWithVote> listInterestPointWithVote = Context.InterestPoint
                         .Include(a => a.Description)
                             .ThenInclude(a => a.VoteDescription)
                         .Include(a => a.VoteInterestPoint)
                         .Include(a=>a.IdUserNavigation)
-                        .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
+                        .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = calculateAverage(ip)})
                         .ToList();
 
                     return Ok(listInterestPointWithVote);
-
-               /*List<InterestPoint> listInterestPoint = context.InterestPoint
-                    .Include(a => a.Description)
-                        .ThenInclude(a => a.VoteDescription)
-                    .Include(a => a.VoteInterestPoint)
-                    .ToList();
-
-                    return Ok(listInterestPoint);*/
-
-            
         }
 
-        // GET api/InterestPoint/GetAllInterestPointsByUser/5 OK
+        // GET api/InterestPoint/GetAllInterestPointsByUser/5
         [HttpGet("GetAllInterestPointsByUser/{idUser}")]
         public IActionResult GetAllInterestPointsByUser(string idUser) 
         {
-
                 ApplicationUser user = Context.ApplicationUser
                         .SingleOrDefault(a => a.Id.CompareTo(idUser) == 0);
                 if(user == null){
                     return NotFound();
                 }
-                else{
+                
+                List<InterestPointWithVote> listInterestPointWithVote = Context.InterestPoint
+                    .Where(a=>a.IdUser == idUser)
+                    .Include(a => a.Description)
+                        .ThenInclude(a => a.VoteDescription)
+                    .Include(a => a.VoteInterestPoint)
+                    .Include(a=>a.IdUserNavigation)
+                    .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = calculateAverage(ip)})
+                    .ToList();
 
-                    List<InterestPointWithVote> listInterestPointWithVote = Context.InterestPoint
-                        .Where(a=>a.IdUser == idUser)
-                        .Include(a => a.Description)
-                            .ThenInclude(a => a.VoteDescription)
-                        .Include(a => a.VoteInterestPoint)
-                        .Include(a=>a.IdUserNavigation)
-                        .Select(ip => new InterestPointWithVote(){ InterestPoint = ip, Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
-                        .ToList();
-
-                    return Ok(listInterestPointWithVote);
-
-                    /*List<InterestPoint> listInterestPoint = context.InterestPoint
-                        .Where(a => a.IdUser == idUser)
-                        .Include(a => a.Description)
-                            .ThenInclude(a => a.VoteDescription)
-                        .Include(a => a.VoteInterestPoint)
-                        .ToList();
-
-                    return Ok(listInterestPoint); */
-                }
-            
+                return Ok(listInterestPointWithVote);
         }
 
-        // GET api/InterestPoint/GetAllInterestPointSortedByVoteInterestPoint OK
+        // GET api/InterestPoint/GetAllInterestPointSortedByVoteInterestPoint
         [HttpGet("GetAllInterestPointSortedByVoteInterestPoint")] 
         public IActionResult GetAllInterestPointByVoteInterest()
         {
-
                 List<InterestPointWithVote> listInterestPointWithVote = Context.InterestPoint
                         .Include(a => a.Description)
                             .ThenInclude(a => a.VoteDescription)
@@ -142,20 +104,23 @@ namespace MoveAndSeeAPI.Controllers
                         .Include(a=>a.IdUserNavigation)
                         .Select(ip => new InterestPointWithVote(){ 
                             InterestPoint = ip, 
-                            Average = (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1)})
+                            Average = calculateAverage(ip)})
                         .ToList()
                         .OrderBy(ip => ip.Average)
                         .ToList();
                         
                 return Ok(listInterestPointWithVote);
-            
         }
 
-        //GET api/InterestPoint/DeleteInterestPointById/3 OK
+        private int calculateAverage(InterestPoint ip){
+            return (ip.VoteInterestPoint.Count() >0 ? (int)(((double) ip.VoteInterestPoint.Count(vip=>vip.IsPositiveAssessment)/ip.VoteInterestPoint.Count())*100) : -1);
+        }
+
+        //GET api/InterestPoint/DeleteInterestPointById/3
         [HttpDelete("DeleteInterestPointById/{idInterestPoint}")]
         public IActionResult DeleteInterestPointById(int idInterestPoint)
         {
-                var interestPointDelete = Context.InterestPoint
+                InterestPoint interestPointDelete = Context.InterestPoint
                                 .Where(a => a.IdInterestPoint == idInterestPoint)
                                 .Include(a =>a.VoteInterestPoint)
                                 .Include(a=>a.Description)
@@ -166,27 +131,32 @@ namespace MoveAndSeeAPI.Controllers
                     return NotFound();
                 }
                 else{
-                    //Suppression des votes de point d'intérêt
-                    foreach(var voteInterestPoint in interestPointDelete.VoteInterestPoint.ToList()){
-                        Context.VoteInterestPoint.Remove(voteInterestPoint);
-                    }
-
-                    //Suppression des descriptions
-                    foreach(var description in interestPointDelete.Description.ToList()){
-
-                        //Suppression des votes de description
-                        foreach(var voteDescription in description.VoteDescription.ToList()){
-                                Context.VoteDescription.Remove(voteDescription);
-                        }
-                        Context.Description.Remove(description);
-                    }
-                            
+                    deleteVoteInterestPoint(interestPointDelete);
+                    deleteDescriptionInterestPoint(interestPointDelete);
                     Context.InterestPoint.Remove(interestPointDelete);
                     Context.SaveChanges();
 
                     return Ok();
                 }
-            
+        }
+
+        private void deleteDescriptionInterestPoint(InterestPoint interestPointDelete){
+            foreach(Description description in interestPointDelete.Description.ToList()){
+
+                        //Suppression des votes de description
+                        deleteVoteDescriptionDescription(description);
+                        Context.Description.Remove(description);
+                    }
+        }
+        private void deleteVoteInterestPoint(InterestPoint interestPointDelete){
+            foreach(VoteInterestPoint voteInterestPoint in interestPointDelete.VoteInterestPoint.ToList()){
+                Context.VoteInterestPoint.Remove(voteInterestPoint);
+            }
+        }
+        private void deleteVoteDescriptionDescription(Description description){
+            foreach(VoteDescription voteDescription in description.VoteDescription.ToList()){
+                Context.VoteDescription.Remove(voteDescription);
+            }
         }
     }
 }

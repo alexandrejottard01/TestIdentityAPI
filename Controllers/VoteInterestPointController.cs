@@ -16,45 +16,34 @@ namespace MoveAndSeeAPI.Controllers
     [Route("api/VoteInterestPoint")]
     public class VoteInterestPointController : BaseController
     {
-
         public VoteInterestPointController(UserManager<ApplicationUser> uMgr, MoveAndSeeDatabaseTestContext context) : base(uMgr, context)
         {
         }
-        //AddVoteInterestPoint OK
-        //GetAllVotesInterestPointByInterestPoint OK
 
-        //POST api/VoteInterestPoint/AddVoteInterestPoint OK
+        //POST api/VoteInterestPoint/AddVoteInterestPoint
         [HttpPost("AddVoteInterestPoint")]
         public IActionResult AddVoteInterestPoint([FromBody]VoteInterestPoint voteInterestPoint)
         {
-            
-
                 if(ModelState.IsValid){
                     Context.VoteInterestPoint.Add(voteInterestPoint);
                     Context.SaveChanges();
 
                     return Ok();
                 }
-                else{
-                    return BadRequest();
-                }
-            
+                return BadRequest();
         }
 
-        // GET api/VoteInterestPoint/GetAllVotesInterestPointByInterestPoint/5 OK
+        // GET api/VoteInterestPoint/GetAllVotesInterestPointByInterestPoint/5
         [HttpGet("GetAllVotesInterestPointByInterestPoint/{idInterestPoint}")]
         public IActionResult GetAllVotesInterestPointByInterestPoint(int idInterestPoint) 
         {
-            
-
                 List<VoteInterestPoint> listVoteInterestPoint = Context.VoteInterestPoint
                         .Where(a => a.IdInterestPoint == idInterestPoint)
                         .Include(a=>a.IdInterestPointNavigation)
                         .Include(a=>a.IdUserNavigation)
                         .ToList();
 
-                return Ok(listVoteInterestPoint);
-            
+                return Ok(listVoteInterestPoint); 
         }
     }
 }

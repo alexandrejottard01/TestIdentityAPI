@@ -23,7 +23,7 @@ namespace TestIdentityAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
         {
-            var newUser=new ApplicationUser{
+            ApplicationUser newUser=new ApplicationUser{
                 UserName=dto.UserName,
                         Email = dto.Email,
                         IsCertified = dto.IsCertified,
@@ -44,71 +44,4 @@ namespace TestIdentityAPI.Controllers
                 return (result.Succeeded)?Ok():(IActionResult)BadRequest();
         }
     }
-    //Créer un user sans rôle
-    /*public class AccountController : Controller
-    {
-        private UserManager<ApplicationUser> _userManager;
-
-        public AccountController(UserManager<ApplicationUser> userManager)
-        {
-            this._userManager=userManager;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
-        {
-                var newUser=new ApplicationUser{
-                    UserName=dto.UserName,
-                    Email = dto.Email,
-                    IsCertified = dto.IsCertified,
-                    Language = dto.Language,
-                    NameCertified = dto.NameCertified,
-                    IsMale = dto.IsMale,
-                    BirthDate = dto.BirthDate
-                        
-                };
-                IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
-                // TODO: retourner un Created à la place du Ok;
-                return (result.Succeeded)?Ok():(IActionResult)BadRequest();
-        }
-    }*/
-
-    //Créer un Administrateur
-    /* 
-    public class AccountController : Controller
-    {
-        private UserManager<ApplicationUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
-
-        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
-        {
-            this._userManager=userManager;
-            this._roleManager=roleManager;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]NewUserDTO dto)
-        {
-            var newUser=new ApplicationUser{
-                UserName=dto.UserName,
-                        Email = dto.Email,
-                        IsCertified = dto.IsCertified,
-                        Language = dto.Language,
-                        NameCertified = dto.NameCertified,
-                        IsMale = dto.IsMale,
-                        BirthDate = dto.BirthDate
-                };
-                IdentityResult result = await _userManager.CreateAsync(newUser,dto.Password);
-                bool adminExist = await _roleManager.RoleExistsAsync("admin");
-                if(!adminExist){
-                    await _roleManager.CreateAsync(new IdentityRole("admin"));
-                }
-
-                await _userManager.AddToRoleAsync(newUser,"admin");
-
-                // TODO: retourner un Created à la place du Ok;
-                return (result.Succeeded)?Ok():(IActionResult)BadRequest();
-        }
-    }
-    */
 }

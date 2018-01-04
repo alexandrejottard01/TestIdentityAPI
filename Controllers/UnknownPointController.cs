@@ -19,67 +19,48 @@ namespace MoveAndSeeAPI.Controllers
         public UnknownPointController(UserManager<ApplicationUser> uMgr, MoveAndSeeDatabaseTestContext context) : base(uMgr, context)
         {
         }
-        //AddUnknownPoint OK
-        //GetUnknwonPointById OK
-        //GetAllUnknownPoints OK
-        //GetAllUnknownPointsSortedByDateCreation OK
-        //DeletUnknownPointById OK
 
-
-        
-
-        //POST api/UnknownPoint/AddUnknownPoint OK
+        //POST api/UnknownPoint/AddUnknownPoint
         [HttpPost("AddUnknownPoint")]
         public IActionResult AddUnknownPoint([FromBody]UnknownPoint unknownPoint)
         {
-            
-
                 if(ModelState.IsValid){
                     Context.UnknownPoint.Add(unknownPoint);
                     Context.SaveChanges();
 
                     return Ok();
                 }
-                else{
-                    return BadRequest();
-                }
 
+                return BadRequest();
                 
-            
         }
 
-        // GET api/UnknownPoint/GetUnknownPointById/5 OK
+        // GET api/UnknownPoint/GetUnknownPointById/5
         [HttpGet("GetUnknownPointById/{idUnknownPoint}")]
         public IActionResult GetUnknownPointById(int idUnknownPoint)
         {
-
-
                 UnknownPoint unknownPoint = Context.UnknownPoint
                         .Include(a=>a.IdUserNavigation)
                         .SingleOrDefault(a => a.IdUnknownPoint == idUnknownPoint);
                 if(unknownPoint == null){
                     return NotFound();
                 }
-                else{
-                    return Ok(unknownPoint); 
-                }
-            
+
+                return Ok(unknownPoint);
         }
 
-        // GET api/UnknownPoint/GetAllUnknownPoints OK
+        // GET api/UnknownPoint/GetAllUnknownPoints
         [HttpGet("GetAllUnknownPoints")]
         public IActionResult GetAllUnknownPoints()
         {
-
                 List<UnknownPoint> listUnknownPoint = Context.UnknownPoint
                         .Include(a=>a.IdUserNavigation)
                         .ToList();
 
                 return Ok(listUnknownPoint);
-            
         }
 
-        // GET api/UnknownPoint/GetAllUnknownPointsSortedByDateCreation OK
+        // GET api/UnknownPoint/GetAllUnknownPointsSortedByDateCreation
         [HttpGet("GetAllUnknownPointsSortedByDateCreation")]
         public IActionResult GetAllUnknownPointsSortedByDateCreation()
         {
@@ -89,29 +70,24 @@ namespace MoveAndSeeAPI.Controllers
                         .ToList();
 
                 return Ok(listUnknownPoint);
-            
         }
 
-        
-
-        //GET api/UnknownPoint/DeleteUnknownPointById/3 OK
+        //GET api/UnknownPoint/DeleteUnknownPointById/3
         [HttpDelete("DeleteUnknownPointById/{idUnknownPoint}")]
         public IActionResult DeleteUnknownPointById(int idUnknownPoint)
         {
-
                 UnknownPoint unknownPointDelete = Context.UnknownPoint
                                 .SingleOrDefault(a => a.IdUnknownPoint == idUnknownPoint);
 
                 if(unknownPointDelete == null){
                     return NotFound();
                 }
-                else{
-                    Context.UnknownPoint.Remove(unknownPointDelete);
-                    Context.SaveChanges();
+                 
+                Context.UnknownPoint.Remove(unknownPointDelete);
+                Context.SaveChanges();
 
-                    return Ok();
-                }
-            
+                return Ok();
+                
         }
     }
 }

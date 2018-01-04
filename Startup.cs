@@ -33,7 +33,7 @@ namespace TestIdentityAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<MoveAndSeeDatabaseTestContext>(options =>
-                 options.UseSqlServer(@"Server=tcp:moveandseeservertest.database.windows.net;Database=MoveAndSeeDatabaseTest;User Id=user20172018mas;Password=Mas20172018;"));
+                 options.UseSqlServer(Configuration.GetConnectionString("moveAndSee")));
 
             services
                 .AddIdentity<ApplicationUser, IdentityRole>()
