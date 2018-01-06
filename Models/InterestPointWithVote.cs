@@ -14,7 +14,5 @@ namespace MoveAndSeeAPI
 
         [Required]
         public int Average { get; set; }
-
-       
     }
 }
