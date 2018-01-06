@@ -4,7 +4,6 @@ DROP TABLE Vote_description;
 DROP TABLE [Description];
 DROP TABLE Interest_point;
 DROP TABLE Unknown_point;
-DROP TABLE [User];
 
 /*Drop table Asp Net Identity*/
 DROP TABLE AspNetUserTokens;
@@ -288,7 +287,7 @@ create table Interest_point(
 	name varchar(30) not null,
 	date_creation date not null,
 	primary key(id_interest_point),
-	constraint fk_creator_interest_point foreign key (id_user) references [AspNetUsers](Id)
+	constraint fk_creator_interest_point foreign key (id_user) references [AspNetUsers]([Id])
 );
 
 create table Unknown_point(
@@ -298,7 +297,7 @@ create table Unknown_point(
 	longitude decimal(9,6) not null,
 	date_creation date not null,
 	primary key(id_unknown_point),
-	constraint fk_creator_unknown_point foreign key (id_user) references [AspNetUsers](Id)
+	constraint fk_creator_unknown_point foreign key (id_user) references [AspNetUsers]([Id])
 );
 
 create table Description(
@@ -306,7 +305,7 @@ create table Description(
 	explication varchar(500) not null,
 	id_user [nvarchar](450) not null,
 	id_interest_point bigint not null,
-    constraint fk_writing foreign key (id_user) references [AspNetUsers](Id),
+    constraint fk_writing foreign key (id_user) references [AspNetUsers]([Id]),
 	constraint fk_subject foreign key (id_interest_point) references Interest_point(id_interest_point),
 	primary key(id_description)
 );
@@ -315,7 +314,7 @@ create table Vote_interest_point(
 	is_positive_assessment bit not null,
 	id_user [nvarchar](450) not null,
 	id_interest_point bigint not null,
-	constraint fk_vote_interest_point foreign key (id_user) references [AspNetUsers](Id),
+	constraint fk_vote_interest_point foreign key (id_user) references [AspNetUsers]([Id]),
 	constraint fk_interest_point_voted foreign key (id_interest_point) references Interest_point(id_interest_point),
 	primary key(id_user,id_interest_point)
 );
@@ -325,85 +324,6 @@ create table Vote_description(
 	id_user [nvarchar](450) not null,
 	id_description bigint not null,
 	constraint fk_description_voted foreign key (id_description) references [Description](id_description),
-	constraint fk_voter_description foreign key (id_user) references [AspNetUsers](Id),
+	constraint fk_voter_description foreign key (id_user) references [AspNetUsers]([Id]),
 	primary key(id_description,id_user)
 );
-
-/*INSERT INTO [dbo].[User] (pseudo, [password], [is_certified], name_certified, [email],[language],isMale, birth_date,[is_admin]) 
-VALUES	('Chronix', '$2y$10$xDNtN7tc6AQdWXHNl0NhMedD2O8LfEOl2BGSdrdxNbfJMv9c1LKM2', 1, 'Alexandre Jottard','alexandre.jottard@gmail.com','français',1,'1993-07-05', 1),
-		('Cheesta', '$2y$10$Qtnowf4cbdGn7JBjvqLlHeaXo5NLy/3BzLlpTnfqmKj9eS65YA3La', 1, 'Bertrand Vens','bertrand.vens@gmail.com','français',1,'1994-11-15', 1),
-		('Cha', '$2y$10$ImnuKbIfrInipP.yAwLgneyuQ/eO3p9wKXy3Pbs.1iWKGHTETidi6', 1, 'Charlotte Colin','charlotte.colin@gmail.com','français',0,'1996-01-23', 1),
-		('Baraldhur', '$2y$10$ImnuKbIfrInipP.yAwLgneyuQ/eO3p9wKXy3Pbs.1iWKGHTETidi6', 1, 'Bob Dylan','bob.dylan@gmail.com','français',1,'1996-01-23', 1),
-		('Barbara', '$2y$10$ImnuKbIfrInipP.yAwLgneyuQ/eO3p9wKXy3Pbs.1iWKGHTETidi6', 1, 'Barbara Stat','barabarabara@gmail.com','français',1,'1996-01-23', 1),
-		('Bryan', '$2y$10$ImnuKbIfrInipP.yAwLgneyuQ/eO3p9wKXy3Pbs.1iWKGHTETidi6', 1, 'Bryan Francotte','bryan.fra@gmail.com','français',1,'1996-01-23', 1),
-		('Kevin', '$2y$10$ImnuKbIfrInipP.yAwLgneyuQ/eO3p9wKXy3Pbs.1iWKGHTETidi6', 1, 'Kevin Lucien','kevin.lucien@gmail.com','français',1,'1996-01-23', 1),
-		('Luc', '$2y$10$ImnuKbIfrInipP.yAwLgneyuQ/eO3p9wKXy3Pbs.1iWKGHTETidi6', 1, 'Luc Pop','luc.pop@gmail.com','français',1,'1996-01-23', 1);
-
-INSERT INTO [dbo].[Interest_point] (id_user, latitude, longitude, [name], date_creation) 
-VALUES	(1,50.469262, 4.862445,'Gare de Namur','2017-11-02'),
-		(1,50.464312, 4.860252,'Place st Aubain','2017-11-06'),
-		(2,50.459962, 4.861122,'Citadelle','2017-11-01'),
-		(2,50.471366, 4.854766,'Iesn','2017-11-04'),
-		(3,50.463260, 4.867608,'Place d''Armes','2017-11-10'),
-		(1,50.463555, 4.864767,'Place du vieux','2017-11-18'),
-		(6,50.461816, 4.868940,'Place du Grognon','2017-11-18'),
-		(6,50.454757, 4.853983,'Chateau de Namur','2017-11-18'),
-		(6,50.458225, 4.852535,'Parc Reine Astrid','2017-11-18'),
-		(6,50.466197, 4.865533,'Ancien Eldorado','2017-11-18'),
-		(1,50.466591, 4.853872,'Plaque sur le pont','2017-11-18');
-
-INSERT INTO [dbo].[Unknown_point] (id_user, latitude, longitude, date_creation) 
-VALUES	(3,50.464076, 4.865961,'2017-11-01'),
-		(3,50.464411, 4.868117,'2017-11-01'),
-		(3,50.464624, 4.865234,'2017-11-02'),
-		(3,50.464024, 4.868810,'2017-10-14');
-
-INSERT INTO [dbo].[Description] (explication, id_user, id_interest_point) 
-VALUES	('La gare de Namur est une gare ferroviaire belge située à Namur, au nord de la Corbeille, le centre historique de la ville.',1,1),
-		('Le sillon ferroviaire est établi sur un ancien bras de Sambre qui ceinturait anciennement le rempart nord de la ville.',2,1),
-		('La place d’Armes, autrefois Grand Place est une place pavée située à Namur en Belgique.',2,2),
-		('La place abritait à l''origine l''hôtel de ville, lequel fut incendié par les soldats allemands durant la Première Guerre mondiale.',3,2),
-		('La gare est superbe depuis qu''elle a été rénovée',1,1),
-		('Il n''y a pas d''armes, je suis déçu',6,5),
-		('Bryan t''es stupide',1,5),
-		('Ancien Cinéma de Namur qu va être remplacé par des magasins',6,10),
-		('Voici ce que l''Eldorado a publié :  C''est avec beaucoup d''émotions et beaucoup de tristesse que notre vieille société namuroise (1918) s''est vue dans l''obligation de prendre la décision de cesser l''exploitation de notre cinéma Eldorado après le 20 décembre 2016.',1,10),
-		('PLaque sur la mort de Claude Boucher',1,11),
-		('Claude Boucher qu est un grand architecte qui a construit ce pont',2,11),
-		('Il y a plein dechet partout c''est dégeulasse',3,1);
-
-
-INSERT INTO [dbo].[Vote_description] ([is_positive_assessment], id_user, id_description) 
-VALUES	(1,1,1),
-		(1,1,2),
-		(1,1,3),
-		(1,2,1),
-		(1,2,2),
-		(1,2,4),
-		(0,3,1),
-		(0,3,2),
-		(1,3,4);
-
-INSERT INTO [dbo].[Vote_interest_point] ([is_positive_assessment], id_user, id_interest_point) 
-VALUES	(1,2,1),
-		(0,2,2),
-		(0,2,3),
-		(0,2,4),
-		(1,3,1),
-		(1,3,2),
-		(1,3,3),
-		(0,3,4),
-		(0,4,1),
-		(0,4,2),
-		(1,4,3),
-		(1,4,4),
-		(1,5,1),
-		(0,5,2),
-		(0,5,3),
-		(0,5,4),
-		(1,6,1),
-		(1,6,2),
-		(0,6,3),
-		(0,6,4),
-		(1,7,1),
-		(1,7,2);*/
