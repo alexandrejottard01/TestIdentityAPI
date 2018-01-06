@@ -19,9 +19,6 @@ namespace TestIdentityAPI
 {
     public class Startup
     {
-        private const string SecretKey = "needtogetthisfromenvironment";
-        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -41,6 +38,9 @@ namespace TestIdentityAPI
                 .AddDefaultTokenProviders();
             // config token
             var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+            var secretKeyOptions = Configuration.GetSection(nameof(SecretKey));
+            SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKeyOptions[nameof(SecretKey.Get_Secret_Key)]));
+
             services.Configure<JwtIssuerOptions>(options =>
             {
                 options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
